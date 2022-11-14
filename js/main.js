@@ -1,12 +1,16 @@
-function getRandomIntInclusive(min, max) {
+function getRandomIntInclusive (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 console.log(getRandomIntInclusive(1, 3));
 
-function getRandomFloatInclusive(min, max, floatValue) {
+function getRandomFloatInclusive (min, max, floatValue) {
   const value = Math.random() * (max - min) + min;
   return value.toFixed(floatValue);
 }
 
 console.log(getRandomFloatInclusive(0.1, 0.3, 3));
+
+function testModule2 () {
+  console.log('просто тест из module2');
+}
