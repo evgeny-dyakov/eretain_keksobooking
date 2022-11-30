@@ -7,7 +7,7 @@ function getRandomFloat (min, max, float) {
   return value.toFixed(float);
 }
 
-function getMixedNumberArray (length) {
+function getMixedNumbers (length) {
   const array = [];
   for (let i = 1; i <= length; i++) {
     let number = getRandomInt(1, length);
@@ -20,33 +20,66 @@ function getMixedNumberArray (length) {
 }
 
 function getAvatarsUrls (quantity) {
-  const array = getMixedNumberArray(quantity);
-  return array.map((element) => element < 10 ? `img/avatars/user0${element}.png` : `img/avatars/user${element}.png`);
+  const numbers = getMixedNumbers(quantity);
+  return numbers.map((element) => element < 10 ? `img/avatars/user0${element}.png` : `img/avatars/user${element}.png`);
 }
 
-// const avatarsUrls = getAvatarsUrls(4);
+function getAuthors (quantity) {
+  const authors = [];
+  const avatarsUrls = getAvatarsUrls(quantity);
 
-// function getAvatar () {
-//   return {
-//     avatar:
-//   }
-// }
+  console.log(avatarsUrls);
 
+  for (let i = 0; i < quantity; i++) {
+    const author = {
+      avatar: avatarsUrls[i],
+    };
+    authors.push(author);
+  }
 
-// создать массив из четырех объектов с перемешанными адресами
+  return authors;
+}
 
-// const result = Array.from({length: 4}, );
+function getTitles (quantity) {
+  const titles = [];
+  const phrase = `Объявление об аренде №`;
+  for (let i = 1; i <= quantity; i++) {
+    const title = `${phrase} ${i}`;
+    titles.push(title);
+  }
+  console.log(titles);
+  return titles;
+}
 
-// const someObj = {
-//   author: {
-//     avatar: 'адрес изображения'
-//   },
-//   offer: {
-//     title: 'заголовок объявления',
-//     address: 'адрес',
-//     price: 50000,
-//     type: '',
-//     rooms: 3,
+function getOffers (quantity) {
+  const offers = [];
+  const titles = getTitles(quantity);
 
-//   },
-// };
+  for (let i = 0; i < quantity; i++) {
+    const offer = {
+      title: titles[i],
+    };
+    offers.push(offer);
+  }
+
+  return offers;
+}
+
+function getAds (quantity) {
+  const ads = [];
+  const authors = getAuthors(quantity);
+  const offers = getOffers(quantity);
+
+  for (let i = 0; i < quantity; i++) {
+    const ad = {
+      author: authors[i],
+      offer: offers[i],
+    };
+
+    ads.push(ad);
+  }
+
+  return ads;
+}
+
+console.log(getAds(5));
