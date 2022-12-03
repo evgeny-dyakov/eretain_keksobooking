@@ -144,7 +144,6 @@ function getFeatures (quantity) {
 
     for (let j = 0; j < featuresSetLength; j++) {
       let feature = variants[getRandomInt(0, variants.length - 1)];
-
       while (featuresSet.includes(feature)) {
         feature = variants[getRandomInt(0, variants.length - 1)];
       }
@@ -158,6 +157,30 @@ function getFeatures (quantity) {
   return features;
 }
 
+function getPhotos (quantity) {
+  const photos = [];
+  const url = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/';
+  const files = ['duonguyen-8LrGtIxxa4w.jpg', 'brandon-hoogenboom-SNxQGWxZQi0.jpg', 'claire-rendall-b6kAwr1i0Iw.jpg'];
+
+  for (let i = 0; i < quantity; i++) {
+    const filesSet = [];
+    const filesSetLength = getRandomInt(1, files.length);
+
+    for (let j = 0; j < filesSetLength; j++) {
+      let file = files[getRandomInt(0, files.length - 1)];
+      while (filesSet.includes(file)) {
+        file = files[getRandomInt(0, files.length - 1)];
+      }
+      filesSet.push(file);
+    }
+
+    const photosSet = filesSet.map((element) => `${url}${element}`);
+    photos.push(photosSet);
+  }
+
+  return photos;
+}
+
 function getOffers (quantity) {
   const offers = [];
   const titles = getTitles(quantity);
@@ -168,6 +191,7 @@ function getOffers (quantity) {
   const checkins = getCheckins(quantity);
   const checkouts = getCheckouts(quantity);
   const features = getFeatures(quantity);
+  const photos = getPhotos(quantity);
 
   for (let i = 0; i < quantity; i++) {
     const offer = {
@@ -179,6 +203,7 @@ function getOffers (quantity) {
       checkin: checkins[i],
       checkout: checkouts[i],
       features: features[i],
+      photos: photos[i],
     };
     offers.push(offer);
   }
@@ -202,4 +227,5 @@ function getAds (quantity) {
   return ads;
 }
 
-getAds(10);
+console.log(getAds(10));
+
