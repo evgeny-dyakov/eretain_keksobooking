@@ -2,9 +2,9 @@ function getRandomInt (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomFloat (min, max, float) {
+function getRandomFloat (min, max, float = 1) {
   const value = Math.random() * (max - min) + min;
-  return value.toFixed(float);
+  return +value.toFixed(float);
 }
 
 function getMixedNumbers (length) {
@@ -115,8 +115,8 @@ function getCheckins (quantity) {
   const variants = ['12:00', '13:00', '14:00'];
 
   for (let i = 0; i < quantity; i++) {
-    const variant = variants[getRandomInt(0, variants.length - 1)];
-    checkins.push(variant);
+    const checkin = variants[getRandomInt(0, variants.length - 1)];
+    checkins.push(checkin);
   }
 
   return checkins;
@@ -127,8 +127,8 @@ function getCheckouts (quantity) {
   const variants = ['12:00', '13:00', '14:00'];
 
   for (let i = 0; i < quantity; i++) {
-    const variant = variants[getRandomInt(0, variants.length - 1)];
-    checkouts.push(variant);
+    const checkout = variants[getRandomInt(0, variants.length - 1)];
+    checkouts.push(checkout);
   }
 
   return checkouts;
@@ -155,6 +155,18 @@ function getFeatures (quantity) {
   }
 
   return features;
+}
+
+function getDescriptions (quantity) {
+  const descriptions = [];
+  const phrase = 'Описание помещения №';
+
+  for (let i = 1; i <= quantity; i++) {
+    const description = `${phrase} ${i}`;
+    descriptions.push(description);
+  }
+
+  return descriptions;
 }
 
 function getPhotos (quantity) {
@@ -192,6 +204,7 @@ function getOffers (quantity) {
   const checkouts = getCheckouts(quantity);
   const features = getFeatures(quantity);
   const photos = getPhotos(quantity);
+  const descriptions = getDescriptions(quantity);
 
   for (let i = 0; i < quantity; i++) {
     const offer = {
@@ -204,6 +217,7 @@ function getOffers (quantity) {
       checkout: checkouts[i],
       features: features[i],
       photos: photos[i],
+      description: descriptions[i],
     };
     offers.push(offer);
   }
@@ -211,15 +225,63 @@ function getOffers (quantity) {
   return offers;
 }
 
+function getLatitudes (quantity) {
+  const latitudes = [];
+  const minLatitude = 35.65000;
+  const maxLatitude = 35.70000;
+
+  for (let i = 0; i < quantity; i++) {
+    const latitude = getRandomFloat(minLatitude, maxLatitude, 5);
+    latitudes.push(latitude);
+  }
+
+  return latitudes;
+}
+
+function getLongitudes (quantity) {
+  const longitudes = [];
+  const minLongitude = 139.70000;
+  const maxLongitude = 139.80000;
+
+  for (let i = 0; i < quantity; i++) {
+    const longitude = getRandomFloat(minLongitude, maxLongitude, 5);
+    longitudes.push(longitude);
+  }
+
+  return longitudes;
+}
+
+function getLocations (quantity) {
+  const locations = [];
+  const latitudes = getLatitudes(quantity);
+  const longitudes = getLongitudes(quantity);
+
+  for (let i = 0; i < quantity; i++) {
+    const location = {
+      lat: latitudes[i],
+      lng: longitudes[i],
+    };
+    locations.push(location);
+  }
+
+  return locations;
+}
+
 function getAds (quantity) {
   const ads = [];
   const authors = getAuthors(quantity);
   const offers = getOffers(quantity);
+  const locations = getLocations(quantity);
+
+  for (let i = 0; i < offers.length; i++) {
+    offers[i].address = `${locations[i].lat}, ${locations[i].lng}`;
+  }
 
   for (let i = 0; i < quantity; i++) {
     const ad = {
       author: authors[i],
       offer: offers[i],
+      location: locations[i],
     };
     ads.push(ad);
   }
