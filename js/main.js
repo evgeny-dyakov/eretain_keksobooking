@@ -1,140 +1,122 @@
-function getRandomInt (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const getRandomInt = (min, max) => {
+  const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomInt;
+};
 
-function getRandomFloat (min, max, float = 1) {
+const getRandomFloat = (min, max, float = 1) => {
   const value = Math.random() * (max - min) + min;
   return +value.toFixed(float);
-}
+};
 
-function getMixedNumbers (length) {
-  const array = [];
+const getRandomUniqueNumbers = (min, max) => {
+  const usedNumbers = [];
 
-  for (let i = 1; i <= length; i++) {
-    let number = getRandomInt(1, length);
-    while(array.includes(number)) {
-      number = getRandomInt(1, length);
+  return () => {
+    if (usedNumbers.length >= (max - min + 1)) {
+      console.error(`Вышел за пределы заданного диапазона от ${min} до ${max}`);
+      return;
     }
-    array.push(number);
-  }
 
-  return array;
-}
-
-function getAvatarsUrls (quantity) {
-  const numbers = getMixedNumbers(quantity);
-  const avatarsUrls = [];
-
-  for (let i = 0; i < quantity; i++) {
-    let avatarUrl;
-    if (numbers[i] < 10) {
-      avatarUrl = `img/avatars/user0${numbers[i]}.png`;
-    } else {
-      avatarUrl = `img/avatars/user${numbers[i]}.png`;
+    let number = getRandomInt(min, max);
+    while (usedNumbers.includes(number)) {
+      number = getRandomInt(min, max);
     }
-    avatarsUrls.push(avatarUrl);
-  }
+    usedNumbers.push(number);
+    return number;
+  };
+};
 
-  return avatarsUrls;
-}
-
-function getAuthors (quantity) {
+const getAuthors = (quantity) => {
   const authors = [];
-  const avatarsUrls = getAvatarsUrls(quantity);
+  const getRandomUniqueNumber = getRandomUniqueNumbers(1, quantity);
 
   for (let i = 0; i < quantity; i++) {
+    const number = getRandomUniqueNumber();
     const author = {
-      avatar: avatarsUrls[i],
+      avatar: number < 10 ? `img/avatars/user0${number}.png` : `img/avatars/user${number}.png`
     };
-    authors.push(author);
+    authors[i] = author;
   }
 
   return authors;
-}
+};
 
-function getTitles (quantity) {
+const getTitles = (quantity) => {
   const titles = [];
   const phrase = 'Объявление об аренде №';
 
   for (let i = 1; i <= quantity; i++) {
     const title = `${phrase} ${i}`;
-    titles.push(title);
+    titles[i - 1] = title;
   }
 
   return titles;
-}
+};
 
-function getPrices (quantity) {
+const getPrices = (quantity) => {
   const prices = [];
 
   for (let i = 0; i < quantity; i++) {
-    let price = getRandomFloat(5, 30, 1);
-    price *= 1000;
-    prices.push(price);
+    prices[i] = getRandomFloat(5, 30, 1) * 1000;
   }
 
   return prices;
-}
+};
 
-function getTypes (quantity) {
+const getTypes = (quantity) => {
   const types = [];
   const variants = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 
   for (let i = 0; i < quantity; i++) {
-    const variant = variants[getRandomInt(0, variants.length - 1)];
-    types.push(variant);
+    types[i] = variants[getRandomInt(0, variants.length - 1)];
   }
 
   return types;
-}
+};
 
-function getRooms (quantity) {
+const getRooms = (quantity) => {
   const rooms = [];
 
   for (let i = 0; i < quantity; i++) {
-    const room = getRandomInt(1, 5);
-    rooms.push(room);
+    rooms[i] = getRandomInt(1, 5);
   }
 
   return rooms;
-}
+};
 
-function getGuests (quantity) {
+const getGuests = (quantity) => {
   const guests = [];
 
   for (let i = 0; i < quantity; i++) {
-    const guest = getRandomInt(1, 5);
-    guests.push(guest);
+    guests[i] = getRandomInt(1, 3);
   }
 
   return guests;
-}
+};
 
-function getCheckins (quantity) {
+const getCheckins = (quantity) => {
   const checkins = [];
   const variants = ['12:00', '13:00', '14:00'];
 
   for (let i = 0; i < quantity; i++) {
-    const checkin = variants[getRandomInt(0, variants.length - 1)];
-    checkins.push(checkin);
+    checkins[i] = variants[getRandomInt(0, variants.length - 1)];
   }
 
   return checkins;
-}
+};
 
-function getCheckouts (quantity) {
+const getCheckouts = (quantity) => {
   const checkouts = [];
   const variants = ['12:00', '13:00', '14:00'];
 
   for (let i = 0; i < quantity; i++) {
-    const checkout = variants[getRandomInt(0, variants.length - 1)];
-    checkouts.push(checkout);
+    checkouts[i] = variants[getRandomInt(0, variants.length - 1)];
   }
 
   return checkouts;
-}
+};
 
-function getFeatures (quantity) {
+const getFeatures = (quantity) => {
   const features = [];
   const variants = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
@@ -148,28 +130,27 @@ function getFeatures (quantity) {
         feature = variants[getRandomInt(0, variants.length - 1)];
       }
 
-      featuresSet.push(feature);
+      featuresSet[j] = feature;
     }
 
-    features.push(featuresSet);
+    features[i] = featuresSet;
   }
 
   return features;
-}
+};
 
-function getDescriptions (quantity) {
+const getDescriptions = (quantity) => {
   const descriptions = [];
   const phrase = 'Описание помещения №';
 
   for (let i = 1; i <= quantity; i++) {
-    const description = `${phrase} ${i}`;
-    descriptions.push(description);
+    descriptions[i - 1] = `${phrase} ${i}`;
   }
 
   return descriptions;
-}
+};
 
-function getPhotos (quantity) {
+const getPhotos = (quantity) => {
   const photos = [];
   const url = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/';
   const files = ['duonguyen-8LrGtIxxa4w.jpg', 'brandon-hoogenboom-SNxQGWxZQi0.jpg', 'claire-rendall-b6kAwr1i0Iw.jpg'];
@@ -186,14 +167,13 @@ function getPhotos (quantity) {
       filesSet.push(file);
     }
 
-    const photosSet = filesSet.map((element) => `${url}${element}`);
-    photos.push(photosSet);
+    photos[i] = filesSet.map((element) => `${url}${element}`);
   }
 
   return photos;
-}
+};
 
-function getOffers (quantity) {
+const getOffers = (quantity) => {
   const offers = [];
   const titles = getTitles(quantity);
   const prices = getPrices(quantity);
@@ -223,51 +203,27 @@ function getOffers (quantity) {
   }
 
   return offers;
-}
+};
 
-function getLatitudes (quantity) {
-  const latitudes = [];
+const getLocations = (quantity) => {
+  const locations = [];
   const minLatitude = 35.65000;
   const maxLatitude = 35.70000;
-
-  for (let i = 0; i < quantity; i++) {
-    const latitude = getRandomFloat(minLatitude, maxLatitude, 5);
-    latitudes.push(latitude);
-  }
-
-  return latitudes;
-}
-
-function getLongitudes (quantity) {
-  const longitudes = [];
   const minLongitude = 139.70000;
   const maxLongitude = 139.80000;
 
   for (let i = 0; i < quantity; i++) {
-    const longitude = getRandomFloat(minLongitude, maxLongitude, 5);
-    longitudes.push(longitude);
-  }
-
-  return longitudes;
-}
-
-function getLocations (quantity) {
-  const locations = [];
-  const latitudes = getLatitudes(quantity);
-  const longitudes = getLongitudes(quantity);
-
-  for (let i = 0; i < quantity; i++) {
     const location = {
-      lat: latitudes[i],
-      lng: longitudes[i],
+      lat: getRandomFloat(minLatitude, maxLatitude, 5),
+      lng: getRandomFloat(minLongitude, maxLongitude, 5),
     };
-    locations.push(location);
+    locations[i] = location;
   }
 
   return locations;
-}
+};
 
-function getAds (quantity) {
+const getAds = (quantity) => {
   const ads = [];
   const authors = getAuthors(quantity);
   const offers = getOffers(quantity);
@@ -283,11 +239,11 @@ function getAds (quantity) {
       offer: offers[i],
       location: locations[i],
     };
-    ads.push(ad);
+    ads[i] = ad;
   }
 
   return ads;
-}
+};
 
 console.log(getAds(10));
 
