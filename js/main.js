@@ -1,3 +1,3 @@
-import './get-ads-test.js';
+import {getAds} from './get-ads.js';
 
-// import {getAds} from './get-ads.js';
+getAds(10);

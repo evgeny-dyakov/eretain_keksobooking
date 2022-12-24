@@ -1,205 +1,101 @@
-const getRandomInt = (min, max) => {
-  const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-  return randomInt;
-};
+const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const getRandomFloat = (min, max, float = 1) => {
-  const value = Math.random() * (max - min) + min;
-  return +value.toFixed(float);
-};
+const getRandomFloat = (min, max, fix) => +(Math.random() * (max - min) + min).toFixed(fix);
 
-const getRandomUniqueNumbers = (min, max) => {
-  const usedNumbers = [];
+const getMixedNumbers = (min, max) => {
+  const mixedNumbers = [];
 
-  return () => {
-    if (usedNumbers.length >= (max - min + 1)) {
-      console.error(`Вышел за пределы заданного диапазона от ${min} до ${max}`);
-      return;
-    }
-
+  for (let i = 0; i < max - min + 1; i++) {
     let number = getRandomInt(min, max);
-    while (usedNumbers.includes(number)) {
+    while (mixedNumbers.includes(number)) {
       number = getRandomInt(min, max);
     }
-    usedNumbers.push(number);
-    return number;
+    mixedNumbers[i] = number;
+  }
+
+  return mixedNumbers;
+};
+
+const getType = () => {
+  const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+  return types[getRandomInt(0, types.length - 1)];
+};
+
+const getCheck = (inOut) => {
+  const check = {
+    in: ['12:00', '13:00', '14:00'],
+    out: ['12:00', '13:00', '14:00'],
   };
+
+  return check[inOut][getRandomInt(0, check[inOut].length - 1)];
 };
 
-const getAuthors = (quantity) => {
-  const authors = [];
-  const getRandomUniqueNumber = getRandomUniqueNumbers(1, quantity);
-
-  for (let i = 0; i < quantity; i++) {
-    const number = getRandomUniqueNumber();
-    const author = {
-      avatar: number < 10 ? `img/avatars/user0${number}.png` : `img/avatars/user${number}.png`
-    };
-    authors[i] = author;
-  }
-
-  return authors;
-};
-
-const getTitles = (quantity) => {
-  const titles = [];
-  const phrase = 'Объявление об аренде №';
-
-  for (let i = 1; i <= quantity; i++) {
-    const title = `${phrase} ${i}`;
-    titles[i - 1] = title;
-  }
-
-  return titles;
-};
-
-const getPrices = (quantity) => {
-  const prices = [];
-
-  for (let i = 0; i < quantity; i++) {
-    prices[i] = getRandomFloat(5, 30, 1) * 1000;
-  }
-
-  return prices;
-};
-
-const getTypes = (quantity) => {
-  const types = [];
-  const variants = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-
-  for (let i = 0; i < quantity; i++) {
-    types[i] = variants[getRandomInt(0, variants.length - 1)];
-  }
-
-  return types;
-};
-
-const getRooms = (quantity) => {
-  const rooms = [];
-
-  for (let i = 0; i < quantity; i++) {
-    rooms[i] = getRandomInt(1, 5);
-  }
-
-  return rooms;
-};
-
-const getGuests = (quantity) => {
-  const guests = [];
-
-  for (let i = 0; i < quantity; i++) {
-    guests[i] = getRandomInt(1, 3);
-  }
-
-  return guests;
-};
-
-const getCheckins = (quantity) => {
-  const checkins = [];
-  const variants = ['12:00', '13:00', '14:00'];
-
-  for (let i = 0; i < quantity; i++) {
-    checkins[i] = variants[getRandomInt(0, variants.length - 1)];
-  }
-
-  return checkins;
-};
-
-const getCheckouts = (quantity) => {
-  const checkouts = [];
-  const variants = ['12:00', '13:00', '14:00'];
-
-  for (let i = 0; i < quantity; i++) {
-    checkouts[i] = variants[getRandomInt(0, variants.length - 1)];
-  }
-
-  return checkouts;
-};
-
-const getFeatures = (quantity) => {
+const getFeatures = () => {
+  const set = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   const features = [];
-  const variants = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-  for (let i = 0; i < quantity; i++) {
-    const featuresSet = [];
-    const featuresSetLength = getRandomInt(1, variants.length);
+  const featuresLength = getRandomInt(1, set.length);
 
-    for (let j = 0; j < featuresSetLength; j++) {
-      let feature = variants[getRandomInt(0, variants.length - 1)];
-      while (featuresSet.includes(feature)) {
-        feature = variants[getRandomInt(0, variants.length - 1)];
-      }
-
-      featuresSet[j] = feature;
+  for (let i = 0; i < featuresLength; i++) {
+    let feature = set[getRandomInt(0, set.length - 1)];
+    while (features.includes(feature)) {
+      feature = set[getRandomInt(0, set.length - 1)];
     }
-
-    features[i] = featuresSet;
+    features[i] = feature;
   }
 
   return features;
 };
 
-const getDescriptions = (quantity) => {
-  const descriptions = [];
-  const phrase = 'Описание помещения №';
-
-  for (let i = 1; i <= quantity; i++) {
-    descriptions[i - 1] = `${phrase} ${i}`;
-  }
-
-  return descriptions;
-};
-
-const getPhotos = (quantity) => {
-  const photos = [];
+const getPhotos = () => {
+  const set = ['duonguyen-8LrGtIxxa4w.jpg', 'brandon-hoogenboom-SNxQGWxZQi0.jpg', 'claire-rendall-b6kAwr1i0Iw.jpg'];
   const url = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/';
-  const files = ['duonguyen-8LrGtIxxa4w.jpg', 'brandon-hoogenboom-SNxQGWxZQi0.jpg', 'claire-rendall-b6kAwr1i0Iw.jpg'];
+  const photos = [];
 
-  for (let i = 0; i < quantity; i++) {
-    const filesSet = [];
-    const filesSetLength = getRandomInt(1, files.length);
+  const photosLength = getRandomInt(1, set.length);
 
-    for (let j = 0; j < filesSetLength; j++) {
-      let file = files[getRandomInt(0, files.length - 1)];
-      while (filesSet.includes(file)) {
-        file = files[getRandomInt(0, files.length - 1)];
-      }
-      filesSet.push(file);
+  for (let i = 0; i < photosLength; i++) {
+    let photo = set[getRandomInt(0, set.length - 1)];
+    while (photos.includes(photo)) {
+      photo = set[getRandomInt(0, set.length - 1)];
     }
-
-    photos[i] = filesSet.map((element) => `${url}${element}`);
+    photos[i] = url + photo;
   }
 
   return photos;
 };
 
+const getAuthors = (quantity) => {
+  const authors = [];
+  const mixedNumbers = getMixedNumbers(1, quantity);
+
+  for (let i = 0; i < quantity; i++) {
+    const number = mixedNumbers[i];
+    authors[i] = {
+      avatar: number < 10 ? `img/avatars/user0${number}.png` : `img/avatars/user${number}.png`,
+    };
+  }
+
+  return authors;
+};
+
 const getOffers = (quantity) => {
   const offers = [];
-  const titles = getTitles(quantity);
-  const prices = getPrices(quantity);
-  const types = getTypes(quantity);
-  const rooms = getRooms(quantity);
-  const guests = getGuests(quantity);
-  const checkins = getCheckins(quantity);
-  const checkouts = getCheckouts(quantity);
-  const features = getFeatures(quantity);
-  const photos = getPhotos(quantity);
-  const descriptions = getDescriptions(quantity);
 
   for (let i = 0; i < quantity; i++) {
     const offer = {
-      title: titles[i],
-      price: prices[i],
-      type: types[i],
-      rooms: rooms[i],
-      guests: guests[i],
-      checkin: checkins[i],
-      checkout: checkouts[i],
-      features: features[i],
-      photos: photos[i],
-      description: descriptions[i],
+      title: `заголовок ${i + 1}`,
+      price: getRandomFloat(15, 50, 1) * 1000,
+      type: getType(),
+      rooms: getRandomInt(1, 5),
+      guests: getRandomInt(1, 5),
+      checkin: getCheck('in'),
+      checkout: getCheck('out'),
+      features: getFeatures(),
+      description: `описание ${i + 1}`,
+      photos: getPhotos(),
     };
-    offers.push(offer);
+    offers[i] = offer;
   }
 
   return offers;
@@ -207,17 +103,12 @@ const getOffers = (quantity) => {
 
 const getLocations = (quantity) => {
   const locations = [];
-  const minLatitude = 35.65000;
-  const maxLatitude = 35.70000;
-  const minLongitude = 139.70000;
-  const maxLongitude = 139.80000;
 
   for (let i = 0; i < quantity; i++) {
-    const location = {
-      lat: getRandomFloat(minLatitude, maxLatitude, 5),
-      lng: getRandomFloat(minLongitude, maxLongitude, 5),
+    locations[i] = {
+      lat: getRandomFloat(35.65, 35.7, 5),
+      lng: getRandomFloat(139.7, 139.8, 5),
     };
-    locations[i] = location;
   }
 
   return locations;
@@ -225,21 +116,21 @@ const getLocations = (quantity) => {
 
 const getAds = (quantity) => {
   const ads = [];
+
   const authors = getAuthors(quantity);
   const offers = getOffers(quantity);
   const locations = getLocations(quantity);
 
-  for (let i = 0; i < offers.length; i++) {
+  for (let i = 0; i < quantity; i++) {
     offers[i].address = `${locations[i].lat}, ${locations[i].lng}`;
   }
 
   for (let i = 0; i < quantity; i++) {
-    const ad = {
+    ads[i] = ({
       author: authors[i],
       offer: offers[i],
       location: locations[i],
-    };
-    ads[i] = ad;
+    });
   }
 
   return ads;
