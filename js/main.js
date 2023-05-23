@@ -1,3 +1,2 @@
-import {getAds} from './get-ads.js';
-
-getAds(10);
+import './make-cards.js';
+import './form.js';
